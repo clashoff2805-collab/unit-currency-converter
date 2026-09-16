@@ -7,11 +7,89 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <!-- Шапка з назвою застосунку -->
-    <!-- Блок вибору типу конвертації -->
-    <!-- Форма введення значень й одиниць -->
-    <!-- Блок результату -->
-    <!-- Підвал -->
+    <header>
+      <h1>Конвертер валют і одиниць</h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Вибір типу конвертації</h2>
+        <form>
+          <input
+            type="radio"
+            id="type-currency"
+            name="conversion-type"
+            value="currency"
+            checked
+          />
+          <label for="type-currency">Валюта</label>
+
+          <input
+            type="radio"
+            id="type-length"
+            name="conversion-type"
+            value="length"
+          />
+          <label for="type-length">Одиниці довжини</label>
+
+          <input
+            type="radio"
+            id="type-weight"
+            name="conversion-type"
+            value="weight"
+          />
+          <label for="type-weight">Одиниці ваги</label>
+        </form>
+      </section>
+
+      <section>
+        <h2>Форма конвертації</h2>
+        <form action="#" method="post">
+          <label for="amount-input">Кількість / Значення:</label>
+          <input
+            type="number"
+            id="amount-input"
+            name="amount"
+            step="any"
+            required
+            placeholder="0.00"
+          />
+
+          <label for="from-select">Звідки:</label>
+          <select id="from-select" name="from_unit">
+            <option value="USD">USD (Долар США)</option>
+            <option value="EUR">EUR (Євро)</option>
+            <option value="UAH">UAH (Гривня)</option>
+          </select>
+
+          <label for="to-select">Куди:</label>
+          <select id="to-select" name="to_unit">
+            <option value="UAH">UAH (Гривня)</option>
+            <option value="USD">USD (Долар США)</option>
+            <option value="EUR">EUR (Євро)</option>
+          </select>
+
+          <label for="result-output">Результат:</label>
+          <input
+            type="text"
+            id="result-output"
+            name="result"
+            readonly
+            placeholder="0.00"
+          />
+
+          <button type="submit">Конвертувати</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Усі курси валют та коефіцієнти є орієнтовними й надані виключно в
+        навчальних цілях. &copy; 2026
+      </p>
+    </footer>
+
     <script src="js/app.js"></script>
   </body>
 </html>
