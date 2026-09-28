@@ -19,30 +19,33 @@ body {
   flex-direction: column;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 header {
   background-color: royalblue;
-  padding: 1rem;
+  padding: 1.25rem 1rem;
   border-bottom: 2px solid rgb(45, 85, 205);
 }
 
 header h1 {
   margin: 0;
   color: aliceblue;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   text-align: center;
 }
 
 main {
   flex: 1;
   width: 100%;
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 1rem;
 }
 
-section {
-  margin: 1.5rem 0;
-  padding: 1.5rem 2rem;
+.card {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
   background-color: aliceblue;
   border: 1px solid darkgray;
   border-radius: 16px;
@@ -51,59 +54,51 @@ section {
     border-color 0.2s ease;
 }
 
-section:hover {
+.card:hover {
   background-color: rgb(221, 240, 255);
   border-color: #333333;
 }
 
-section:first-of-type {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  padding: 1.2rem 2rem;
-}
-
-section:first-of-type h2 {
-  margin: 0;
-  font-size: 1.4rem;
-  white-space: nowrap;
-}
-
-section:first-of-type form {
-  display: block;
-}
-
-section:first-of-type input[type='radio'] {
-  display: inline-block;
-  margin: 0.35rem 0.5rem 0.35rem 0;
-  cursor: pointer;
-  vertical-align: middle;
-}
-
-section:first-of-type label {
-  display: inline;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  vertical-align: middle;
-}
-
-section:first-of-type label::after {
-  content: '';
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
-section:last-of-type h2 {
+.card h2 {
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
   text-align: center;
 }
 
-section:last-of-type form label {
-  display: block;
-  margin-top: 1rem;
-  margin-bottom: 0.4rem;
+.type-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.radio-label input[type='radio'] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.converter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.form-group label {
   font-weight: 600;
   font-size: 0.95rem;
   color: #333333;
@@ -112,11 +107,13 @@ section:last-of-type form label {
 form input[type='number'],
 form input[type='text'],
 form select {
+  width: 100%;
   padding: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   border: 1px solid darkgray;
-  border-radius: 4px;
+  border-radius: 6px;
   font-family: inherit;
+  background-color: #ffffff;
 }
 
 form input[type='number']:focus,
@@ -126,28 +123,17 @@ form select:focus {
   border-color: royalblue;
 }
 
-section:last-of-type form input[type='number'],
-section:last-of-type form input[type='text'] {
-  display: block;
+.units-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
 }
 
-section:last-of-type form label[for='from-select'],
-section:last-of-type form label[for='to-select'] {
-  text-align: center;
-}
-
-section:last-of-type form select {
-  display: block;
-  width: 25%;
-  min-width: 180px;
-  margin: 0 auto;
-}
-
-section:last-of-type form button[type='submit'] {
+.btn-submit {
   display: block;
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
   padding: 12px 24px;
   border: none;
   border-radius: 6px;
@@ -160,7 +146,7 @@ section:last-of-type form button[type='submit'] {
   transition: background-color 0.2s ease;
 }
 
-section:last-of-type form button[type='submit']:hover {
+.btn-submit:hover {
   background-color: rgb(45, 85, 205);
 }
 
@@ -171,4 +157,45 @@ footer {
   color: gainsboro;
   padding: 1rem;
   text-align: center;
+}
+
+@media (min-width: 600px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .type-form {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .units-row {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .field-unit {
+    flex: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  main {
+    max-width: 760px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .card {
+    padding: 2rem 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .card h2 {
+    font-size: 1.5rem;
+  }
+
+  .converter-form {
+    gap: 1.4rem;
+  }
 }

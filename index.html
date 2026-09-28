@@ -12,73 +12,89 @@
     </header>
 
     <main>
-      <section>
+      <section class="card type-selection">
         <h2>Вибір типу конвертації</h2>
-        <form>
-          <input
-            type="radio"
-            id="type-currency"
-            name="conversion-type"
-            value="currency"
-            checked
-          />
-          <label for="type-currency">Валюта</label>
+        <form class="type-form">
+          <label class="radio-label">
+            <input
+              type="radio"
+              id="type-currency"
+              name="conversion-type"
+              value="currency"
+              checked
+            />
+            <span>Валюта</span>
+          </label>
 
-          <input
-            type="radio"
-            id="type-length"
-            name="conversion-type"
-            value="length"
-          />
-          <label for="type-length">Одиниці довжини</label>
+          <label class="radio-label">
+            <input
+              type="radio"
+              id="type-length"
+              name="conversion-type"
+              value="length"
+            />
+            <span>Одиниці довжини</span>
+          </label>
 
-          <input
-            type="radio"
-            id="type-weight"
-            name="conversion-type"
-            value="weight"
-          />
-          <label for="type-weight">Одиниці ваги</label>
+          <label class="radio-label">
+            <input
+              type="radio"
+              id="type-weight"
+              name="conversion-type"
+              value="weight"
+            />
+            <span>Одиниці ваги</span>
+          </label>
         </form>
       </section>
 
-      <section>
+      <section class="card converter-section">
         <h2>Форма конвертації</h2>
-        <form action="#" method="post">
-          <label for="amount-input">Кількість / Значення:</label>
-          <input
-            type="number"
-            id="amount-input"
-            name="amount"
-            step="any"
-            required
-            placeholder="0.00"
-          />
+        <form action="#" method="post" class="converter-form">
+          <div class="form-group">
+            <label for="amount-input">Кількість / Значення:</label>
+            <input
+              type="number"
+              id="amount-input"
+              name="amount"
+              step="any"
+              required
+              placeholder="0.00"
+            />
+          </div>
 
-          <label for="from-select">Звідки:</label>
-          <select id="from-select" name="from_unit">
-            <option value="USD">USD (Долар США)</option>
-            <option value="EUR">EUR (Євро)</option>
-            <option value="UAH">UAH (Гривня)</option>
-          </select>
+          <div class="units-row">
+            <div class="form-group field-unit">
+              <label for="from-select">Звідки:</label>
+              <select id="from-select" name="from_unit">
+                <option value="USD">USD (Долар США)</option>
+                <option value="EUR">EUR (Євро)</option>
+                <option value="UAH">UAH (Гривня)</option>
+              </select>
+            </div>
 
-          <label for="to-select">Куди:</label>
-          <select id="to-select" name="to_unit">
-            <option value="UAH">UAH (Гривня)</option>
-            <option value="USD">USD (Долар США)</option>
-            <option value="EUR">EUR (Євро)</option>
-          </select>
+            <div class="form-group field-unit">
+              <label for="to-select">Куди:</label>
+              <select id="to-select" name="to_unit">
+                <option value="UAH">UAH (Гривня)</option>
+                <option value="USD">USD (Долар США)</option>
+                <option value="EUR">EUR (Євро)</option>
+              </select>
+            </div>
+          </div>
 
-          <label for="result-output">Результат:</label>
-          <input
-            type="text"
-            id="result-output"
-            name="result"
-            readonly
-            placeholder="0.00"
-          />
+          <div class="form-group">
+            <label for="result-output">Результат:</label>
+            <input
+              type="text"
+              id="result-output"
+              name="result"
+              readonly
+              placeholder="0.00"
+            />
+          </div>
 
-          <button type="submit">Конвертувати</button>
+          <button type="submit" class="btn-submit">Конвертувати</button>
         </form>
       </section>
     </main>
