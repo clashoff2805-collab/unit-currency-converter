@@ -6,7 +6,6 @@
 
 body {
   margin: 0;
-  /* Нейтральний, світлий фон для чистоти інтерфейсу */
   background-color: #f3f4f6;
   font-family:
     system-ui,
@@ -25,15 +24,8 @@ img {
   height: auto;
 }
 
-/*
-  Виконання нечіткої вимоги варіанта 6: «інтерфейс має викликати довіру».
-  Обґрунтування: Використано стриману «фінансову» палітру.
-  Головний колір — глибокий синій (#1E3A8A), який традиційно асоціюється
-  з банківською сферою, надійністю та стабільністю. Ми уникаємо яскравих чи
-  неонових кольорів, щоб інтерфейс виглядав професійно.
-*/
 header {
-  background-color: #1e3a8a; /* Темно-синій, довірливий колір */
+  background-color: #1e3a8a;
   padding: 1.25rem 1rem;
   border-bottom: 3px solid #152c69;
 }
@@ -56,7 +48,7 @@ main {
   padding: 1.5rem;
   background-color: #ffffff;
   border: 1px solid #d1d5db;
-  border-radius: 8px; /* Менш круглі кути виглядають більш суворо та фінансово */
+  border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
@@ -82,7 +74,6 @@ main {
   cursor: pointer;
 }
 
-/* Центрована форма з обмеженою max-width */
 .converter-form {
   display: flex;
   flex-direction: column;
@@ -104,20 +95,15 @@ main {
   color: #374151;
 }
 
-/*
-  Чітка вимога варіанта 6: Усі поля вводу й кнопка «конвертувати»
-  мають однакову висоту 44px, а контраст рамки й тексту >= 4.5:1.
-  Колір рамки #4B5563 має контраст до білого фону 5.3:1 (WCAG AA пройдено).
-*/
 form input[type='number'],
 form input[type='text'],
 form select,
 .btn-submit {
-  height: 44px; /* Чітко задана висота */
+  height: 44px;
   width: 100%;
   padding: 0 12px;
   font-size: 1rem;
-  border: 1px solid #4b5563; /* Контраст 5.3:1 */
+  border: 1px solid #4b5563;
   border-radius: 4px;
   font-family: inherit;
   background-color: #f9fafb;
@@ -140,7 +126,6 @@ form select:focus {
   width: 100%;
 }
 
-/* Кнопка обміну значень як помітний, але не крикливий акцент */
 .btn-swap {
   height: 44px;
   width: 44px;
@@ -157,7 +142,6 @@ form select:focus {
   align-items: center;
   justify-content: center;
 
-  /* Центрування для мобільної версії */
   align-self: center;
 }
 
@@ -203,11 +187,10 @@ footer {
   .units-row {
     flex-direction: row;
     gap: 0.8rem;
-    align-items: flex-end; /* Вирівнювання по нижньому краю на десктопі */
+    align-items: flex-end;
   }
 
   .btn-swap {
-    /* Скидаємо центрування на десктопі, щоб кнопка стояла в один ряд із селектами */
     align-self: auto;
   }
 
