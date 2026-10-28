@@ -50,7 +50,12 @@
 
       <section class="card converter-section">
         <h2>Форма конвертації</h2>
-        <form action="#" method="post" class="converter-form">
+        <form
+          action="#"
+          method="post"
+          class="converter-form"
+          id="converter-form"
+        >
           <div class="form-group">
             <label for="amount-input">Кількість / Значення:</label>
             <input
@@ -58,6 +63,7 @@
               id="amount-input"
               name="amount"
               step="any"
+              min="0.01"
               required
               placeholder="0.00"
             />
@@ -66,11 +72,7 @@
           <div class="units-row">
             <div class="form-group field-unit">
               <label for="from-select">Звідки:</label>
-              <select id="from-select" name="from_unit">
-                <option value="USD">USD (Долар США)</option>
-                <option value="EUR">EUR (Євро)</option>
-                <option value="UAH">UAH (Гривня)</option>
-              </select>
+              <select id="from-select" name="from_unit"></select>
             </div>
 
             <button
@@ -84,11 +86,7 @@
 
             <div class="form-group field-unit">
               <label for="to-select">Куди:</label>
-              <select id="to-select" name="to_unit">
-                <option value="UAH">UAH (Гривня)</option>
-                <option value="USD">USD (Долар США)</option>
-                <option value="EUR">EUR (Євро)</option>
-              </select>
+              <select id="to-select" name="to_unit"></select>
             </div>
           </div>
 
@@ -107,13 +105,9 @@
         </form>
       </section>
 
-      <!-- Додано секцію для Варіанта №6 -->
-      <section class="card rates-section">
-        <h2>Поточні курси валют</h2>
-        <ul id="rates-list">
-          <li id="static-placeholder">USD: 1 (заглушка)</li>
-        </ul>
-        <p id="rates-count">Кількість валют у списку: 0</p>
+      <section class="card history-section">
+        <h2>Історія конвертацій</h2>
+        <ul id="history-list"></ul>
       </section>
     </main>
 

@@ -1,4 +1,4 @@
-// Вхідні дані курсів валют та поріг для класу big-rate
+// Вхідні дані курсів валют
 const courses = {
   USD: 1,
   EUR: 0.92,
@@ -7,65 +7,24 @@ const courses = {
   PLN: 3.95
 };
 
-const threshold = 10;
+// Масив історії конвертацій (Варіант 6)
+const conversionHistory = [];
 
-// Крок 2: Видалення статичної заглушки з HTML
-const placeholder = document.querySelector('#static-placeholder');
-if (placeholder) {
-  placeholder.remove();
-}
-
-// Крок 3: Вибір контейнерів та елементів
-const ratesList = document.querySelector('#rates-list');
-const ratesCount = document.querySelector('#rates-count');
+// Вибір DOM-елементів
 const fromSelect = document.querySelector('#from-select');
 const toSelect = document.querySelector('#to-select');
+const amountInput = document.querySelector('#amount-input');
+const resultOutput = document.querySelector('#result-output');
+const converterForm = document.querySelector('#converter-form');
+const historyList = document.querySelector('#history-list');
 
 /**
- * Рендерит список курсів валют у контейнер #rates-list (Варіант №6)
- * @param {Object} ratesData - Об'єкт із курсами валют
- */
-function renderRates(ratesData) {
-  if (!ratesList) return;
-
-  // Очищення контейнера
-  ratesList.innerHTML = '';
-
-  const entries = Object.entries(ratesData);
-
-  // Кроки 4-7: Цикл створення та додавання елементів li
-  entries.forEach(([currency, rate]) => {
-    const li = document.createElement('li');
-
-    // Крок 5: Заповнення textContent у форматі «USD: 1»
-    li.textContent = `${currency}: ${rate}`;
-
-    // Крок 6: Встановлення атрибута data-rate та умовного класу big-rate
-    li.dataset.rate = rate;
-    if (rate > threshold) {
-      li.classList.add('big-rate');
-    }
-
-    // Крок 7: Додавання елемента в контейнер
-    ratesList.append(li);
-  });
-
-  // Крок 9: Оновлення підсумкового елемента
-  if (ratesCount) {
-    ratesCount.textContent = `Кількість валют у списку: ${entries.length}`;
-  }
-}
-
-/**
- * Синхронізує та динамічно заповнює селектори выбору валют
- * @param {Object} ratesData - Об'єкт із курсами валют
+ * Синхронізує та динамічно заповнює селектори вибору валют
  */
 function updateSelectOptions(ratesData) {
   if (!fromSelect || !toSelect) return;
 
   const currencies = Object.keys(ratesData);
-
-  // Генерація елементів <option> для кожної валюти
   const optionsHTML = currencies
     .map(code => `<option value="${code}">${code}</option>`)
     .join('');
@@ -73,11 +32,94 @@ function updateSelectOptions(ratesData) {
   fromSelect.innerHTML = optionsHTML;
   toSelect.innerHTML = optionsHTML;
 
-  // Встановлення початкових значень за замовчуванням
   if (currencies.includes('USD')) fromSelect.value = 'USD';
   if (currencies.includes('UAH')) toSelect.value = 'UAH';
 }
 
-// Крок 8: Ініціалізація та виклик функцій при завантаженні
-renderRates(courses);
+/**
+ * Розраховує значення конвертації
+ */
+function calculateConversion() {
+  if (!amountInput || !resultOutput || !fromSelect || !toSelect) return null;
+
+  const amount = parseFloat(amountInput.value);
+  if (isNaN(amount) || amount <= 0) {
+    resultOutput.value = '';
+    return null;
+  }
+
+  const fromRate = courses[fromSelect.value];
+  const toRate = courses[toSelect.value];
+
+  if (!fromRate || !toRate) return null;
+
+  const result = (amount / fromRate) * toRate;
+  const formattedResult = result.toFixed(2);
+  resultOutput.value = formattedResult;
+
+  return {
+    amount,
+    from: fromSelect.value,
+    to: toSelect.value,
+    result: formattedResult
+  };
+}
+
+/**
+ * Рендерить масив історії конвертацій
+ */
+function renderHistory(historyData) {
+  if (!historyList) return;
+
+  historyList.innerHTML = '';
+  historyData.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.amount} ${item.from} = ${item.result} ${item.to}`;
+    historyList.append(li);
+  });
+}
+
+// ==========================================
+// Обробники подій (Варіант 6)
+// ==========================================
+
+// Додаткова валідація поля кількості (input event)
+if (amountInput) {
+  amountInput.addEventListener('input', () => {
+    const val = parseFloat(amountInput.value);
+    if (!isNaN(val) && val <= 0) {
+      amountInput.setCustomValidity('Сума має бути додатною');
+    } else {
+      amountInput.setCustomValidity('');
+    }
+    calculateConversion();
+  });
+}
+
+// Перерахунок при зміні селекторів
+if (fromSelect) {
+  fromSelect.addEventListener('change', calculateConversion);
+}
+if (toSelect) {
+  toSelect.addEventListener('change', calculateConversion);
+}
+
+// Обробка submit форми
+if (converterForm) {
+  converterForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const conversionData = calculateConversion();
+    if (!conversionData) return;
+
+    conversionHistory.push(conversionData);
+    renderHistory(conversionHistory);
+
+    converterForm.reset();
+    if (resultOutput) resultOutput.value = '';
+    updateSelectOptions(courses);
+  });
+}
+
+// Ініціалізація
 updateSelectOptions(courses);
