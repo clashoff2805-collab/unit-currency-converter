@@ -49,7 +49,26 @@
       </section>
 
       <section class="card converter-section">
-        <h2>Форма конвертації</h2>
+        <div class="converter-header">
+          <h2>Форма конвертації</h2>
+          <button type="button" id="btn-refresh" class="btn-refresh">
+            Оновити курси
+          </button>
+        </div>
+
+        <!-- Індикатори стану завантаження та помилок -->
+        <div
+          id="status-message"
+          class="status-message"
+          style="display: none"
+        ></div>
+        <div
+          id="error-message"
+          class="error-message"
+          style="display: none"
+        ></div>
+        <div id="rates-info" class="rates-info"></div>
+
         <form
           action="#"
           method="post"
@@ -113,9 +132,8 @@
 
     <footer>
       <p>
-        Усі курси валют та коефіцієнти є орієнтовними й надані виключно в
-        навчальних цілях. Виконано студентом групи ІП-51 Тихим Денисом. &copy;
-        2026.
+        Усі курси валют та коефіцієнти надані через Frankfurter API (ЄЦБ).
+        Виконано студентом групи ІП-51 Тихим Денисом. &copy; 2026.
       </p>
     </footer>
 

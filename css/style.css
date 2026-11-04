@@ -17,6 +17,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 img {
@@ -25,9 +26,11 @@ img {
 }
 
 header {
+  width: 100%;
   background-color: #1e3a8a;
   padding: 1.25rem 1rem;
   border-bottom: 3px solid #152c69;
+  text-align: center;
 }
 
 header h1 {
@@ -40,30 +43,83 @@ header h1 {
 main {
   flex: 1;
   width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card {
+  width: 100%;
   margin-bottom: 1.25rem;
   padding: 1.5rem;
   background-color: #ffffff;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .card h2 {
   margin-top: 0;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   font-size: 1.3rem;
   text-align: center;
   color: #111827;
 }
 
-.type-form {
+/* Відцентрування шапки картки з кнопкою оновлення */
+.converter-header {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.converter-header h2 {
+  margin: 0;
+}
+
+/* Стиль та відцентрування кнопки "Оновити курси" */
+.btn-refresh {
+  background-color: #e5e7eb;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-refresh:hover {
+  background-color: #d1d5db;
+  color: #111827;
+}
+
+/* Відцентрування службових повідомлень */
+.status-message,
+.error-message,
+.rates-info {
+  text-align: center;
+  margin: 0.5rem auto;
+}
+
+.type-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
 }
 
 .radio-label {
@@ -77,14 +133,17 @@ main {
 .converter-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.2rem;
-  max-width: 480px;
+  width: 100%;
+  max-width: 440px;
   margin: 0 auto;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.4rem;
   width: 100%;
 }
@@ -93,6 +152,7 @@ main {
   font-weight: 600;
   font-size: 0.95rem;
   color: #374151;
+  text-align: center;
 }
 
 form input[type='number'],
@@ -108,6 +168,7 @@ form select,
   font-family: inherit;
   background-color: #f9fafb;
   color: #1f2937;
+  text-align: center;
 }
 
 form input[type='number']:focus,
@@ -122,7 +183,12 @@ form select:focus {
 .units-row {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.field-unit {
   width: 100%;
 }
 
@@ -141,8 +207,8 @@ form select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-
   align-self: center;
+  flex-shrink: 0;
 }
 
 .btn-swap:hover {
@@ -164,7 +230,25 @@ form select:focus {
   background-color: #152c69;
 }
 
+/* Історія конвертацій */
+#history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+#history-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#history-list li:last-child {
+  border-bottom: none;
+}
+
 footer {
+  width: 100%;
   margin-top: auto;
   background-color: #111827;
   font-size: 0.85rem;
@@ -178,30 +262,13 @@ footer {
     font-size: 2rem;
   }
 
-  .type-form {
-    flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-  }
-
   .units-row {
     flex-direction: row;
     gap: 0.8rem;
     align-items: flex-end;
   }
 
-  .btn-swap {
-    align-self: auto;
-  }
-
   .field-unit {
     flex: 1;
-  }
-}
-
-@media (min-width: 1024px) {
-  main {
-    max-width: 800px;
-    margin: 2rem auto;
   }
 }
