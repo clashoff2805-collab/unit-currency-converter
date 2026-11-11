@@ -1,232 +1,118 @@
-const API_URL = 'https://api.frankfurter.dev/v1/latest';
+// Крок 1. Обрано фреймворк Vue 3.
+// Обґрунтування: Vue має зручну систему двостороннього зв'язування (v-model) та обчислюваних властивостей (computed), що ідеально підходить для автоматичного перерахунку результату без кнопок.
 
-// Об'єкт поточних курсів відносно обраної базової валюти
-let courses = {};
+const { createApp } = Vue;
 
-// Масив історії конвертацій
-const conversionHistory = [];
+// Крок 4. Створення компонента
+const ConverterForm = {
+  template: `
+    <div>
+      <div v-if="loading" class="status-message" style="display: block;">Завантаження актуальних курсів...</div>
+      <div v-if="error" class="error-message" style="display: block;">{{ error }}</div>
+      <div v-if="!loading && !error" class="rates-info">Курси завантажено успішно.</div>
 
-// Вибір DOM-елементів
-const fromSelect = document.querySelector('#from-select');
-const toSelect = document.querySelector('#to-select');
-const amountInput = document.querySelector('#amount-input');
-const resultOutput = document.querySelector('#result-output');
-const converterForm = document.querySelector('#converter-form');
-const historyList = document.querySelector('#history-list');
+      <form class="converter-form" @submit.prevent>
+        <div class="form-group">
+          <label for="amount-input">Кількість / Значення:</label>
+          <!-- Двостороннє зв'язування (v-model) -->
+          <input type="number" id="amount-input" v-model.number="amount" step="any" min="0.01" placeholder="0.00" />
+        </div>
 
-const btnSwap = document.querySelector('.btn-swap');
-const btnRefresh = document.querySelector('#btn-refresh');
-const statusMessage = document.querySelector('#status-message');
-const errorMessage = document.querySelector('#error-message');
-const ratesInfo = document.querySelector('#rates-info');
-const submitBtn = document.querySelector('.btn-submit');
+        <div class="units-row">
+          <div class="form-group field-unit">
+            <label for="from-select">Звідки:</label>
+            <select id="from-select" v-model="fromUnit">
+              <!-- Крок 5. Рендер циклом v-for -->
+              <option v-for="currency in currencies" :key="currency" :value="currency">
+                {{ currency }}
+              </option>
+            </select>
+          </div>
 
-/**
- * Управління візуальним станом завантаження
- */
-function showLoading(isLoading) {
-  if (!statusMessage) return;
+          <!-- Крок 6. Інтерактивна подія (зміна місцями) -->
+          <button type="button" class="btn-swap" @click="swapRates" title="Поміняти місцями">⇄</button>
 
-  if (isLoading) {
-    statusMessage.textContent = 'Завантаження актуальних курсів...';
-    statusMessage.style.display = 'block';
-    if (submitBtn) submitBtn.disabled = true;
-    if (btnRefresh) btnRefresh.disabled = true;
-  } else {
-    statusMessage.style.display = 'none';
-    if (submitBtn) submitBtn.disabled = false;
-    if (btnRefresh) btnRefresh.disabled = false;
-  }
-}
+          <div class="form-group field-unit">
+            <label for="to-select">Куди:</label>
+            <select id="to-select" v-model="toUnit">
+              <option v-for="currency in currencies" :key="currency" :value="currency">
+                {{ currency }}
+              </option>
+            </select>
+          </div>
+        </div>
 
-/**
- * Відображення або приховування повідомлень про помилку
- */
-function showError(message) {
-  if (!errorMessage) return;
+        <div class="form-group">
+          <label for="result-output">Результат:</label>
+          <!-- Вивід похідного значення (computed) -->
+          <input type="text" id="result-output" :value="result" readonly placeholder="0.00" />
+        </div>
+      </form>
+    </div>
+  `,
+  // Крок 3. Реактивний стан компонента
+  data() {
+    return {
+      amount: 1,
+      fromUnit: 'USD',
+      toUnit: 'EUR',
+      rates: {},
+      loading: false,
+      error: ''
+    };
+  },
+  computed: {
+    currencies() {
+      return Object.keys(this.rates);
+    },
+    // Похідне значення, яке перераховується автоматично при зміні amount, fromUnit або toUnit
+    result() {
+      if (!this.amount || this.amount <= 0 || Object.keys(this.rates).length === 0) return '';
 
-  if (message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-  } else {
-    errorMessage.textContent = '';
-    errorMessage.style.display = 'none';
-  }
-}
+      const fromRate = this.rates[this.fromUnit];
+      const toRate = this.rates[this.toUnit];
 
-/**
- * Виконує асинхронний fetch-запит до Frankfurter API
- */
-async function fetchRates(baseCurrency = 'USD') {
-  showLoading(true);
-  showError('');
+      if (!fromRate || !toRate) return '';
 
-  try {
-    const response = await fetch(`${API_URL}?from=${baseCurrency}`);
+      // Розрахунок через крос-курс відносно базової валюти
+      return ((this.amount / fromRate) * toRate).toFixed(2);
+    }
+  },
+  methods: {
+    async fetchRates() {
+      this.loading = true;
+      this.error = '';
+      try {
+        const response = await fetch('https://api.frankfurter.dev/v1/latest?from=USD');
+        if (!response.ok) throw new Error('Помилка сервера');
 
-    // Перевірка коду статусу (422 — непідтримувана валюта)
-    if (!response.ok) {
-      if (response.status === 422 || response.status === 404) {
-        throw new Error('Перевірте код валюти');
+        const data = await response.json();
+        // Додаємо базову валюту до списку курсів (USD = 1)
+        this.rates = { [data.base]: 1, ...data.rates };
+      } catch (err) {
+        this.error = 'Не вдалося завантажити дані. Перевірте мережеве з\'єднання.';
+      } finally {
+        this.loading = false;
       }
-      throw new Error(`Сервер відповів кодом ${response.status}`);
+    },
+    swapRates() {
+      const temp = this.fromUnit;
+      this.fromUnit = this.toUnit;
+      this.toUnit = temp;
     }
-
-    const data = await response.json();
-
-    courses = { [data.base]: 1, ...data.rates };
-
-    if (ratesInfo) {
-      ratesInfo.textContent = `Курси відносно ${data.base} станом на ${data.date}`;
-    }
-
-    updateSelectOptions(courses, data.base);
-    calculateConversion();
-  } catch (error) {
-    console.error('Помилка виконання запиту:', error);
-
-    if (error.message === 'Перевірте код валюти') {
-      showError('Перевірте код валюти');
-    } else {
-      showError('Не вдалося завантажити дані. Перевірте мережеве з\'єднання.');
-    }
-  } finally {
-    showLoading(false);
+  },
+  mounted() {
+    // Автоматичне завантаження курсів при старті
+    this.fetchRates();
   }
-}
+};
 
-/**
- * Динамічно заповнює та оновлює списки селекторів
- */
-function updateSelectOptions(ratesData, currentBase) {
-  if (!fromSelect || !toSelect) return;
-
-  const currentFrom = fromSelect.value || currentBase || 'USD';
-  const currentTo = toSelect.value || 'EUR';
-
-  const currencies = Object.keys(ratesData);
-  const optionsHTML = currencies
-    .map(code => `<option value="${code}">${code}</option>`)
-    .join('');
-
-  fromSelect.innerHTML = optionsHTML;
-  toSelect.innerHTML = optionsHTML;
-
-  if (currencies.includes(currentFrom)) {
-    fromSelect.value = currentFrom;
+// Створення та монтування Vue-додатка
+// Крок 7. Ручний DOM-код замінено на ініціалізацію фреймворку
+const app = createApp({
+  components: {
+    ConverterForm
   }
-  if (currencies.includes(currentTo)) {
-    toSelect.value = currentTo;
-  }
-}
+});
 
-/**
- * Розраховує конвертацію за поточним курсом
- */
-function calculateConversion() {
-  if (!amountInput || !resultOutput || !fromSelect || !toSelect) return null;
-
-  const amount = parseFloat(amountInput.value);
-  if (isNaN(amount) || amount <= 0) {
-    resultOutput.value = '';
-    return null;
-  }
-
-  const fromCurrency = fromSelect.value;
-  const toCurrency = toSelect.value;
-
-  const fromRate = courses[fromCurrency];
-  const toRate = courses[toCurrency];
-
-  if (!fromRate || !toRate) {
-    resultOutput.value = '';
-    return null;
-  }
-
-  const result = (amount / fromRate) * toRate;
-  const formattedResult = result.toFixed(2);
-  resultOutput.value = formattedResult;
-
-  return {
-    amount,
-    from: fromCurrency,
-    to: toCurrency,
-    result: formattedResult
-  };
-}
-
-/**
- * Рендерить масив історії конвертацій
- */
-function renderHistory(historyData) {
-  if (!historyList) return;
-
-  historyList.innerHTML = '';
-  historyData.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = `${item.amount} ${item.from} = ${item.result} ${item.to}`;
-    historyList.append(li);
-  });
-}
-
-// Подія вводу для валідації суми
-if (amountInput) {
-  amountInput.addEventListener('input', () => {
-    const val = parseFloat(amountInput.value);
-    if (!isNaN(val) && val <= 0) {
-      amountInput.setCustomValidity('Сума має бути додатною');
-    } else {
-      amountInput.setCustomValidity('');
-    }
-    calculateConversion();
-  });
-}
-
-// При зміні базової валюти "Звідки" робимо новий запит до API
-if (fromSelect) {
-  fromSelect.addEventListener('change', () => {
-    fetchRates(fromSelect.value);
-  });
-}
-
-if (toSelect) {
-  toSelect.addEventListener('change', calculateConversion);
-}
-
-// Подія для кнопки свапу валют місцями
-if (btnSwap) {
-  btnSwap.addEventListener('click', () => {
-    const temp = fromSelect.value;
-    fromSelect.value = toSelect.value;
-    toSelect.value = temp;
-    fetchRates(fromSelect.value);
-  });
-}
-
-// Подія для кнопки "Оновити курси"
-if (btnRefresh) {
-  btnRefresh.addEventListener('click', () => {
-    const currentBase = fromSelect.value || 'USD';
-    fetchRates(currentBase);
-  });
-}
-
-// Обробка відправки форми
-if (converterForm) {
-  converterForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const conversionData = calculateConversion();
-    if (!conversionData) return;
-
-    conversionHistory.push(conversionData);
-    renderHistory(conversionHistory);
-
-    converterForm.reset();
-    if (resultOutput) resultOutput.value = '';
-    fetchRates(fromSelect.value || 'USD');
-  });
-}
-
-// Початкова ініціалізація даних при завантаженні сторінки
-fetchRates('USD');
+app.mount('#app');

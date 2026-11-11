@@ -5,45 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Конвертер валют і одиниць</title>
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Підключення Vue 3 через CDN (Крок 2) -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
     <header>
       <h1>Конвертер валют і одиниць</h1>
     </header>
 
-    <main>
+    <!-- Кореневий елемент для Vue -->
+    <main id="app">
       <section class="card type-selection">
         <h2>Вибір типу конвертації</h2>
         <form class="type-form">
           <label class="radio-label">
             <input
               type="radio"
-              id="type-currency"
               name="conversion-type"
               value="currency"
               checked
             />
             <span>Валюта</span>
-          </label>
-
-          <label class="radio-label">
-            <input
-              type="radio"
-              id="type-length"
-              name="conversion-type"
-              value="length"
-            />
-            <span>Одиниці довжини</span>
-          </label>
-
-          <label class="radio-label">
-            <input
-              type="radio"
-              id="type-weight"
-              name="conversion-type"
-              value="weight"
-            />
-            <span>Одиниці ваги</span>
           </label>
         </form>
       </section>
@@ -51,82 +33,10 @@
       <section class="card converter-section">
         <div class="converter-header">
           <h2>Форма конвертації</h2>
-          <button type="button" id="btn-refresh" class="btn-refresh">
-            Оновити курси
-          </button>
         </div>
 
-        <!-- Індикатори стану завантаження та помилок -->
-        <div
-          id="status-message"
-          class="status-message"
-          style="display: none"
-        ></div>
-        <div
-          id="error-message"
-          class="error-message"
-          style="display: none"
-        ></div>
-        <div id="rates-info" class="rates-info"></div>
-
-        <form
-          action="#"
-          method="post"
-          class="converter-form"
-          id="converter-form"
-        >
-          <div class="form-group">
-            <label for="amount-input">Кількість / Значення:</label>
-            <input
-              type="number"
-              id="amount-input"
-              name="amount"
-              step="any"
-              min="0.01"
-              required
-              placeholder="0.00"
-            />
-          </div>
-
-          <div class="units-row">
-            <div class="form-group field-unit">
-              <label for="from-select">Звідки:</label>
-              <select id="from-select" name="from_unit"></select>
-            </div>
-
-            <button
-              type="button"
-              class="btn-swap"
-              aria-label="Поміняти місцями"
-              title="Поміняти місцями"
-            >
-              ⇄
-            </button>
-
-            <div class="form-group field-unit">
-              <label for="to-select">Куди:</label>
-              <select id="to-select" name="to_unit"></select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="result-output">Результат:</label>
-            <input
-              type="text"
-              id="result-output"
-              name="result"
-              readonly
-              placeholder="0.00"
-            />
-          </div>
-
-          <button type="submit" class="btn-submit">Конвертувати</button>
-        </form>
-      </section>
-
-      <section class="card history-section">
-        <h2>Історія конвертацій</h2>
-        <ul id="history-list"></ul>
+        <!-- Виклик нашого компонента -->
+        <converter-form></converter-form>
       </section>
     </main>
 
