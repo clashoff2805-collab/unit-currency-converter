@@ -70,7 +70,6 @@ main {
   color: #111827;
 }
 
-/* Відцентрування шапки картки з кнопкою оновлення */
 .converter-header {
   display: flex;
   flex-direction: column;
@@ -84,7 +83,6 @@ main {
   margin: 0;
 }
 
-/* Стиль та відцентрування кнопки "Оновити курси" */
 .btn-refresh {
   background-color: #e5e7eb;
   border: 1px solid #9ca3af;
@@ -105,12 +103,23 @@ main {
   color: #111827;
 }
 
-/* Відцентрування службових повідомлень */
 .status-message,
-.error-message,
 .rates-info {
   text-align: center;
   margin: 0.5rem auto;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  text-align: center;
+  margin: 0.5rem auto 1rem;
+  padding: 0.6rem 0.8rem;
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 4px;
+  color: #b91c1c;
+  font-size: 0.9rem;
 }
 
 .type-form {
@@ -231,20 +240,56 @@ form select:focus {
 }
 
 /* Історія конвертацій */
-#history-list {
+.history-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  text-align: center;
+  text-align: left;
 }
 
-#history-list li {
-  padding: 0.5rem 0;
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.25rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
-#history-list li:last-child {
+.history-item:last-child {
   border-bottom: none;
+}
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-main {
+  font-weight: 600;
+  color: #111827;
+}
+
+.history-time {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.btn-delete {
+  background-color: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  color: #6b7280;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
 }
 
 footer {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Конвертер валют і одиниць</title>
     <link rel="stylesheet" href="css/style.css" />
-    <!-- Підключення Vue 3 через CDN (Крок 2) -->
+    <!-- Підключення Vue 3 через CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
@@ -30,14 +30,8 @@
         </form>
       </section>
 
-      <section class="card converter-section">
-        <div class="converter-header">
-          <h2>Форма конвертації</h2>
-        </div>
-
-        <!-- Виклик нашого компонента -->
-        <converter-form></converter-form>
-      </section>
+      <!-- Компонент форми конвертації та історії -->
+      <converter-form></converter-form>
     </main>
 
     <footer>
