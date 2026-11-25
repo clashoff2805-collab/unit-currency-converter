@@ -98,9 +98,14 @@ main {
   justify-content: center;
 }
 
-.btn-refresh:hover {
+.btn-refresh:hover:not(:disabled) {
   background-color: #d1d5db;
   color: #111827;
+}
+
+.btn-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .status-message,
@@ -239,6 +244,42 @@ form select:focus {
   background-color: #152c69;
 }
 
+/* Секція графіка Canvas (Практична №12) */
+.chart-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.chart-header h2 {
+  margin: 0;
+}
+
+.chart-subtitle {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.4rem;
+  overflow: hidden;
+}
+
+#history-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: crosshair;
+}
+
 /* Історія конвертацій */
 .history-list {
   list-style: none;
@@ -315,5 +356,9 @@ footer {
 
   .field-unit {
     flex: 1;
+  }
+
+  .chart-header {
+    flex-direction: row;
   }
 }
